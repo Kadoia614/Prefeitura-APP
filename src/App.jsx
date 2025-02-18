@@ -13,6 +13,7 @@ import Setor from "./Components/Layout/Admin/Setor/Setor";
 import DemandasTi from "./Components/Layout/DemandasTI/DemandasTi";
 import AllDemandas from "./Components/Layout/DemandasTI/AllDemandas/AllDemandas";
 import UserDemandas from "./Components/Layout/DemandasTI/UserDemandas/UserDemandas";
+import HistoryDemandas from "./Components/Layout/DemandasTI/HistoryDemandas/HistoryDemandas";
 
 import ProtectRoutes from "./Components/middleware/ProtectRoutes";
 import HandleError from "./Components/middleware/HandleError";
@@ -41,7 +42,7 @@ function App() {
             <Route path="/demandasti" element={<DemandasTi />}>
               <Route index element={<UserDemandas />} />
               <Route path="alldemandas" element={<AllDemandas />} />
-              <Route path="historydemandas" element={<PainelAdmin />} />
+              <Route path="historicodemandas" element={<HistoryDemandas />} />
             </Route>
           </Route>
           <Route path="*" element={<HandleError />} />

@@ -459,7 +459,7 @@ const UserDemandas = () => {
                       as="h3"
                       className="text-lg font-semibold text-gray-900"
                     >
-                      Assumir Demanda
+                      Encerrar Demanda
                     </DialogTitle>
                     <p className="font-bold mt-2">
                       Tem certeza que deseja finalizar essa demanda? O status
@@ -476,7 +476,7 @@ const UserDemandas = () => {
                   }}
                   className="btn-success"
                 >
-                  Assumir demanda
+                  Encerrar demanda
                 </button>
                 <button
                   type="button"

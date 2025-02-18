@@ -29,7 +29,7 @@ const DemandasTi = () => {
             </Link>
           </div>
         </div>
-        <div className="ring-1 ring-black p-10 rounded-b-sm">
+        <div className="ring-1 ring-black p-10 rounded-b-sm bg-green-50">
           <Outlet scopo={scopo} setScopo={setScopo}></Outlet>
         </div>
       </div>
