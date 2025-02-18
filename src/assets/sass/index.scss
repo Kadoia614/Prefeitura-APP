@@ -1,0 +1,63 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #058143;
+  --color-primaryhover: #55a77e;
+  --color-secondary: #14a5de;
+  --color-secondaryHover: #47b1f9;
+  --color-disabledGray: #d2d3d5;
+
+  --animate-down: down 1.5s ease-in-out 1;
+
+  @keyframes down {
+    0% {
+      height: 0;
+      padding: 0;
+    }
+    100% {
+      height: 105px;
+    }
+  }
+}
+
+body,
+#root {
+  @apply h-dvh;
+
+  th {
+    @apply text-black;
+  }
+  .nav-link {
+    @apply block px-2 py-1 text-lg font-bold text-primary hover:text-primaryhover rounded-sm;
+  }
+}
+.btn-primary {
+  @apply mt-4 px-2 py-1.5 bg-primary hover:bg-primaryhover text-white font-bold rounded-sm cursor-pointer text-center disabled:bg-gray-200 disabled:hover:bg-gray-300 disabled:text-black;
+}
+.btn-secondary {
+  @apply mt-4 px-2 py-1.5 bg-secondary hover:bg-secondaryHover text-white font-bold rounded-sm cursor-pointer text-center disabled:bg-gray-200 disabled:hover:bg-gray-300 disabled:text-black;
+}
+.btn-danger {
+  @apply mt-4 px-2 py-1.5 bg-red-500 hover:bg-red-200 text-white font-bold rounded-sm cursor-pointer text-center disabled:bg-gray-200 disabled:hover:bg-gray-300 disabled:text-black;
+}
+.btn-success {
+  @apply mt-4 px-2 py-1.5 bg-green-600 hover:bg-green-700 text-white font-bold rounded-sm cursor-pointer text-center ring-gray-300 ring-1 disabled:bg-gray-200 disabled:hover:bg-gray-300 disabled:text-black;
+}
+.btn-cancel {
+  @apply mt-4 px-2 py-1.5 bg-white hover:bg-gray-100 text-black font-bold rounded-sm cursor-pointer text-center ring-gray-300 ring-1 disabled:bg-gray-200 disabled:hover:bg-gray-300 disabled:text-black;
+}
+
+.bg-danger {
+  @apply bg-red-500 text-white font-bold text-lg;
+}
+.bg-success {
+  @apply bg-green-600 text-white font-bold text-lg;
+}
+
+.input {
+  @apply disabled:bg-gray-200 disabled:hover:bg-gray-300 rounded-sm ring-primary ring-1 px-2 py-1 w-full;
+}
+
+.select {
+  @apply disabled:bg-gray-200 disabled:hover:bg-gray-300 p-1 rounded-sm;
+}

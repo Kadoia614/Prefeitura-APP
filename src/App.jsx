@@ -1,0 +1,54 @@
+import { Routes, Route } from "react-router";
+import { useState } from "react";
+
+import Header from "./Components/Main/Header";
+import Login from "./Components/Main/Login";
+import ChangePwd from "./Components/Main/changePwd";
+
+import Services from "./Components/Layout/Services";
+import PainelAdmin from "./Components/Layout/Admin/PainelAdmin/PainelAdmin";
+import PainelServices from "./Components/Layout/Admin/painelServices/painelServices";
+import Setor from "./Components/Layout/Admin/Setor/Setor";
+
+import DemandasTi from "./Components/Layout/DemandasTI/DemandasTi";
+import AllDemandas from "./Components/Layout/DemandasTI/AllDemandas/AllDemandas";
+import UserDemandas from "./Components/Layout/DemandasTI/UserDemandas/UserDemandas";
+
+import ProtectRoutes from "./Components/middleware/ProtectRoutes";
+import HandleError from "./Components/middleware/HandleError";
+import Admin from "./Components/Layout/Admin/Admin";
+
+function App() {
+  let [auth, setAuth] = useState(false);
+
+  return (
+    <>
+      <div id="Main" className="h-full flex flex-col">
+      <Header isAuth={auth} auth={setAuth} />
+        <Routes>
+          <Route path="/login" index element={<Login auth={setAuth} />} />
+
+          <Route path="/" element={<ProtectRoutes isAuth={auth} />}>
+            <Route index element={<Services isAuth={auth} auth={setAuth} />} />
+            <Route path="alterarsenha" element={<ChangePwd />} />
+
+            <Route path="/admin" element={<Admin />}>
+              <Route index element={<PainelAdmin />} />
+              <Route path="service" element={<PainelServices />} />
+              <Route path="setor" element={<Setor />} />
+            </Route>
+
+            <Route path="/demandasti" element={<DemandasTi />}>
+              <Route index element={<UserDemandas />} />
+              <Route path="alldemandas" element={<AllDemandas />} />
+              <Route path="historydemandas" element={<PainelAdmin />} />
+            </Route>
+          </Route>
+          <Route path="*" element={<HandleError />} />
+        </Routes>
+      </div>
+    </>
+  );
+}
+
+export default App;
