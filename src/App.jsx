@@ -22,7 +22,7 @@ function App() {
   return (
     <>
       <div id="Main" className="h-full flex flex-col">
-      <Header/>
+        <Header />
         <Routes>
           <Route path="/" index element={<Login />} />
 
@@ -30,13 +30,13 @@ function App() {
             <Route index element={<Services />} />
             <Route path="alterarsenha" element={<ChangePwd />} />
 
-            <Route path="/admin" element={<Admin />}>
+            <Route path="admin" element={<Admin />}>
               <Route index element={<PainelAdmin />} />
               <Route path="service" element={<PainelServices />} />
               <Route path="setor" element={<Setor />} />
             </Route>
 
-            <Route path="/demandasti" element={<DemandasTi />}>
+            <Route path="demandasti" element={<DemandasTi />}>
               <Route index element={<UserDemandas />} />
               <Route path="alldemandas" element={<AllDemandas />} />
               <Route path="historicodemandas" element={<HistoryDemandas />} />
