@@ -1,5 +1,7 @@
 import { Outlet, Navigate } from "react-router";
-import Cookies from "js-cookie";
+import { useContext, useEffect } from "react";
+import { AppContext } from "../../context/Context";
+import API from "../../../service/API";
 
 const ProtectRoutes = () => {
   const { auth, setAuth } = useContext(AppContext);
