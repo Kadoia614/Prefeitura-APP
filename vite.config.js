@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     host: '0.0.0.0', // Permite que o servidor seja acessível externamente
-    port: 5173, // Porta padrão do Vite
+    port: 80, // Porta padrão do Vite
     proxy: {
       '/api': {
         target: 'http://192.168.16.80:8000',
