@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import {AppContext} from "../../context/Context";
 import PropTypes from "prop-types";
 import { useNavigate, Link } from "react-router";
-import Cookies from "js-cookie";
 import { FaUser } from "react-icons/fa";
+
 import API from "/src/../service/API";
+
 import {
   Disclosure,
   DisclosureButton,
@@ -17,10 +19,10 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
 import logoItap from "/prefeitura-de-itapecerica-da-serra.jpg";
 
-const Header = ({ isAuth, auth }) => {
+const Header = () => {
+  const {auth, setAuth} = useContext(AppContext)
   const [services, setServices] = useState([]); // Inicializado como array vazio
   const navigate = useNavigate();
-  const token = Cookies.get("token");
 
   // Função para buscar dados da API
   const fetchData = async () => {
@@ -43,10 +45,10 @@ const Header = ({ isAuth, auth }) => {
   // Função para logout
   const Logout = async () => {
     try {
-      auth(false);
-      await API.post("/logout");
-      Cookies.remove("token"); // Remove o token ao fazer logout
+      const response = await API.post("/logout");
+      console.log(response.status)
       navigate("/login");
+      setAuth(false)
     } catch (error) {
       alert("Erro ao fazer logout: " + error.message);
     }
@@ -54,8 +56,9 @@ const Header = ({ isAuth, auth }) => {
 
   // useEffect para carregar serviços ao montar o componente
   useEffect(() => {
-    getService();
-  }, [isAuth]);
+    auth ? getService() : '';
+    
+  }, [auth]);
 
   return (
     <header id="Header" className=" drop-shadow-sm shadow-md shadow-gray-300">
@@ -86,7 +89,7 @@ const Header = ({ isAuth, auth }) => {
                 />
               </div>
               <div className="hidden md:flex md:ml-6">
-                {token ? (
+                {auth ? (
                   <>
                     {services.map((service) => (
                       <Link
@@ -161,7 +164,7 @@ const Header = ({ isAuth, auth }) => {
 
         <DisclosurePanel className="md:hidden">
           <div className="space-y-1 pc-2 pt-2 pb-3">
-            {token ? (
+            {auth ? (
               <>
                 {services.map((service) => (
                   <Link
@@ -236,8 +239,7 @@ const Header = ({ isAuth, auth }) => {
   );
 };
 Header.propTypes = {
-  isAuth: PropTypes.bool.isRequired,
-  auth: PropTypes.func.isRequired,
+  auth: PropTypes.any
 };
 
 export default Header;

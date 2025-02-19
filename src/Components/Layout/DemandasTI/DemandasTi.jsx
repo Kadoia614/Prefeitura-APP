@@ -1,10 +1,11 @@
-import { useState } from "react";
 import { Outlet } from "react-router";
 import { Link } from "react-router";
+import { AppContext } from "/src/context/Context";
+import { useContext } from "react";
 
 const DemandasTi = () => {
-  let [scopo, setScopo] = useState();
-
+    let {scopo} = useContext(AppContext)
+  
   return (
     <>
       <div id="DemandasTi">
@@ -30,7 +31,7 @@ const DemandasTi = () => {
           </div>
         </div>
         <div className="ring-1 ring-black p-10 rounded-b-sm bg-green-50">
-          <Outlet scopo={scopo} setScopo={setScopo}></Outlet>
+          <Outlet></Outlet>
         </div>
       </div>
     </>

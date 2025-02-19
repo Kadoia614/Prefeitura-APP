@@ -1,7 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router";
-import { AppProvider } from "./context/scopoContext";
+import { AppProvider } from "./context/Context";
 
 import "./assets/sass/index.scss";
 import App from "./App.jsx";
