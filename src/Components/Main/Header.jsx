@@ -37,6 +37,16 @@ const Header = () => {
     }
   };
 
+  const authUser = async () => {
+    const response = await API.get("/verifyAuth");
+    if (response.status === 200) {
+      setAuth(true);
+    } else {
+      setAuth(false);
+    }
+
+  };
+
   // Função para configurar os serviços
   const getService = async () => {
     await fetchData(); // Aguarda a resposta do fetchData
@@ -55,6 +65,10 @@ const Header = () => {
   };
 
   // useEffect para carregar serviços ao montar o componente
+  useEffect(() => {
+    authUser();
+  }, []);
+
   useEffect(() => {
     auth ? getService() : '';
     

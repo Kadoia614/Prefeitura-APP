@@ -167,6 +167,10 @@ const UserDemandas = () => {
 
   useEffect(() => {
     loadTable();
+
+    setInterval(() => {
+      loadTable();
+    }, 10000);
   }, []);
 
   if (error) {

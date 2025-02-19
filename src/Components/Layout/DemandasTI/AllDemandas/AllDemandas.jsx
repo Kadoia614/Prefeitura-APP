@@ -151,6 +151,10 @@ const AllDemandas = () => {
 
   useEffect(() => {
     loadTable();
+
+    setInterval(() => {
+      loadTable();
+    }, 10000)
   }, []);
 
   if (error) {
