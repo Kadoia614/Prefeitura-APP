@@ -22,7 +22,7 @@ const ProtectRoutes = () => {
 
   return (
     <div className="container mx-auto h-full bg-white w-full px-10 py-10 rounded-sm">
-      {auth ? <Outlet /> : <Navigate to="/" />}
+      {auth ? <Outlet /> : <Navigate to="/login" />}
     </div>
   );
 };

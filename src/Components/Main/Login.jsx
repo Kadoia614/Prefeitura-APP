@@ -45,7 +45,7 @@ const Login = () => {
       if (response.data.firstLogin) {
         navigate("/alterarsenha");
       } else {
-        navigate("/services");
+        navigate("/");
       }
     } catch (err) {
       setError(err);

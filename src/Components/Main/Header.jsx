@@ -102,7 +102,7 @@ const Header = () => {
                     ))}
 
                     <Link
-                      to={"/services"}
+                      to={"/"}
                       className="nav-link"
                     >
                       Todos os serviços
@@ -177,7 +177,7 @@ const Header = () => {
                 ))}
                 <hr className="text-black"/>
                 <Link
-                  to={"/services"}
+                  to={"/"}
                   className="px-2 py-1 text-lg font-bold text-primary hover:text-primaryhover rounded-sm"
                 >
                   Todos os serviços
