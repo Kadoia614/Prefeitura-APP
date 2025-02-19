@@ -7,14 +7,6 @@ export default defineConfig({
   server: {
     host: '0.0.0.0', // Permite que o servidor seja acessível externamente
     port: 5173, // Porta padrão do Vite
-    proxy: {
-      '/api': {
-        target: 'http://192.168.16.80:8000',
-        changeOrigin: true,
-        secure: false,
-        ws: true,
-      }
-    },
     hmr: {
       host: '192.168.16.80',
       port: 5173,
