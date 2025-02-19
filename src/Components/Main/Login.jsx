@@ -1,7 +1,5 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router";
-import {AppContext} from "../../context/Context";
-
 
 import logoItap from "/prefeitura-de-itapecerica-da-serra.jpg";
 import API from "/src/../service/API";
@@ -9,11 +7,8 @@ import API from "/src/../service/API";
 import PrimaryButton from "../shared/PrimaryButton";
 
 // eslint-disable-next-line react/prop-types
-const Login = () => {
+const Login = ({ auth }) => {
   const teste = true;
-
-  const {setAuth} = useContext(AppContext)
-  const {setScopo} = useContext(AppContext)
 
   let [error, setError] = useState();
   let [email, setEmail] = useState();
@@ -27,21 +22,17 @@ const Login = () => {
     setPass(document.getElementById("Password").value);
 
     try {
-
       if (!teste) {
         if (!/^[A-Z0-9._%+-]+@itapecerica+\.sp\.gov\.br$/i.test(email)) {
           throw { status: 403, message: "Email inválido" };
         }
       }
-
       const response = await API.post("/login", {
         email: userMail,
         pass: userPass,
         permanecerConectado: permanecerConectado,
       });
-      setScopo(response.data.scopo)
-      setAuth(true)
-
+      auth(true);
       if (response.data.firstLogin) {
         navigate("/alterarsenha");
       } else {
@@ -49,8 +40,6 @@ const Login = () => {
       }
     } catch (err) {
       setError(err);
-      setAuth(false)
-
     }
   };
 

@@ -7,7 +7,7 @@ import TableRow from "../../../shared/Table/TableRow";
 import TableCol from "../../../shared/Table/TableCol";
 import ActionButton from "../../../shared/Table/ActionButton";
 import AlertInfo from "../../../shared/alert/AlertInfo";
-import { AppContext } from "/src/context/Context";
+import { AppContext } from "/src/context/scopoContext";
 import {
   Dialog,
   DialogBackdrop,

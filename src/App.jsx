@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router";
+import { useState } from "react";
 
 import Header from "./Components/Main/Header";
 import Login from "./Components/Main/Login";
@@ -19,15 +20,17 @@ import HandleError from "./Components/middleware/HandleError";
 import Admin from "./Components/Layout/Admin/Admin";
 
 function App() {
+  let [auth, setAuth] = useState(false);
+
   return (
     <>
       <div id="Main" className="h-full flex flex-col">
         <Header />
         <Routes>
-          <Route path="/" index element={<Login />} />
+          <Route path="/login" index element={<Login auth={setAuth} />} />
 
-          <Route path="/services" element={<ProtectRoutes />}>
-            <Route index element={<Services />} />
+          <Route path="/" element={<ProtectRoutes isAuth={auth} />}>
+            <Route index element={<Services isAuth={auth} auth={setAuth} />} />
             <Route path="alterarsenha" element={<ChangePwd />} />
 
             <Route path="admin" element={<Admin />}>
