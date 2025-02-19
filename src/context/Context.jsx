@@ -7,7 +7,7 @@ export const AppContext = createContext();
 
 export const AppProvider = ({children}) => {
     let [scopo, setScopo] = useState();
-    let [auth, setAuth] = useState(false);
+    let [auth, setAuth] = useState(true);
 
     return(
         <AppContext.Provider value={{scopo, setScopo, auth, setAuth}}>
