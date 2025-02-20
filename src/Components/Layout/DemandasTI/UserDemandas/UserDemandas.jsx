@@ -45,7 +45,7 @@ const UserDemandas = () => {
   const loadTable = async () => {
     const data = await fetchData();
 
-    setTableData(data.demandas);
+    setTableData(data.userDemandas);
     setScopo(data.scopo);
   };
 

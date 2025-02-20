@@ -28,8 +28,8 @@ const HistoryDemandas = () => {
 
   const loadTable = async () => {
     const data = await fetchData();
-    console.log(data.demandas)
-    setTableData(data.demandas);
+    console.log(data.demandasHistory)
+    setTableData(data.demandasHistory);
   };
 
 

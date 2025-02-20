@@ -5,7 +5,7 @@ import { useContext } from "react";
 
 const DemandasTi = () => {
     let {scopo} = useContext(AppContext)
-  
+    console.log(scopo)
   return (
     <>
       <div id="DemandasTi">
@@ -15,7 +15,7 @@ const DemandasTi = () => {
               <h3>Demandas do Usuário</h3>
             </Link>
           </div>
-          {scopo != "user" && scopo != "gestor" ? (
+          {scopo === "admin" || scopo === "tecnico" ? (
             <div className="px-2 py-1 bg-primary hover:bg-primaryhover text-md font-bold text-white rounded-t-lg">
               <Link to={"alldemandas"}>
                 <h3>Todas Demandas</h3>
