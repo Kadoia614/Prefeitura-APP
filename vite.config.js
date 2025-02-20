@@ -5,11 +5,19 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   server: {
-    host: '0.0.0.0', // Permite que o servidor seja acessível externamente
-    port: 5173, // Porta padrão do Vite
+    host: "0.0.0.0", // Permite acesso externo (caso rode em Docker ou outro IP)
+    port: 5173,
+    strictPort: true, // Garante que use a porta 5173
     hmr: {
-      host: '192.168.16.80',
-      port: 5173,
-    }
+      clientPort: 5173, // Se rodar em Docker ou WSL, pode precisar definir manualmente
+    },
+    proxy: {
+      "/api": {
+        target: "http://192.168.16.80:8000",
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      },
+    },
   },
 });
