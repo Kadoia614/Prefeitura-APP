@@ -5,6 +5,7 @@ import { useNavigate, Link } from "react-router";
 import { FaUser } from "react-icons/fa";
 
 import API from "/src/../service/API";
+import Cookies from 'js-cookie';
 
 import {
   Disclosure,
@@ -58,6 +59,7 @@ const Header = () => {
       const response = await API.post("/logout");
       console.log(response.status)
       navigate("/login");
+      Cookies.remove('token', { path: '/api' });
       setAuth(false)
     } catch (error) {
       alert("Erro ao fazer logout: " + error.message);
