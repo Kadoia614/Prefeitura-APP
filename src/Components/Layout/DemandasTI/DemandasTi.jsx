@@ -1,10 +1,10 @@
 import { Outlet } from "react-router";
 import { Link } from "react-router";
-import { AppContext } from "/src/context/Context";
+import { UserContext } from "/src/context/UserContext";
 import { useContext } from "react";
 
 const DemandasTi = () => {
-    let {scopo} = useContext(AppContext)
+    let {scopo} = useContext(UserContext)
     console.log(scopo)
   return (
     <>

@@ -1,19 +1,24 @@
-import { Outlet, Navigate } from "react-router";
+import { Outlet, useNavigate } from "react-router";
 import { useContext, useEffect } from "react";
-import { AppContext } from "../../context/Context";
+import { UserContext } from "../../context/UserContext";
 import API from "../../../service/API";
 
 const ProtectRoutes = () => {
-  const { auth, setAuth } = useContext(AppContext);
+  const { setAuth } = useContext(UserContext);
+  const navigate = useNavigate();
 
   const authUser = async () => {
-    const response = await API.get("/verifyAuth");
-    if (response.status === 200) {
+    try {
+      let response = await API.get("/verifyToken");
       setAuth(true);
-    } else {
+      console.log(response.data);
+    } catch (error) {
       setAuth(false);
-    }
+      console.log(error.message);
+      localStorage.removeItem('token');
+      navigate('/login')
 
+    }
   };
 
   useEffect(() => {
@@ -21,8 +26,8 @@ const ProtectRoutes = () => {
   }, []);
 
   return (
-    <div className="container mx-auto h-full bg-white w-full px-10 py-10 rounded-sm">
-      {auth ? <Outlet /> : <Navigate to="/login" />}
+    <div className="container mx-auto h-full bg-white w-full lg:px-10 px-4 py-10 rounded-sm">
+      <Outlet />
     </div>
   );
 };

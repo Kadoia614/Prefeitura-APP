@@ -1,150 +1,114 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import {AppContext} from "../../context/Context";
 
+import API from "../../../service/API";
 
-import logoItap from "/prefeitura-de-itapecerica-da-serra.jpg";
-import API from "/src/../service/API";
+import { UserContext } from "/src/context/UserContext";
+import { InputText } from "primereact/inputtext";
+import { MdOutlinePassword } from "react-icons/md";
+import { FaUser } from "react-icons/fa";
+import { Button } from 'primereact/button';
 
-import PrimaryButton from "../shared/PrimaryButton";
-
-// eslint-disable-next-line react/prop-types
 const Login = () => {
-  const teste = true;
+  let [user, setUser] = useState("");
+  let [pwd, setPwd] = useState("");
+  let [loading, setLoading] = useState(false);
 
-  const {setAuth} = useContext(AppContext)
-  const {setScopo} = useContext(AppContext)
-
-  let [error, setError] = useState();
-  let [email, setEmail] = useState();
-  let [pass, setPass] = useState();
-  let [permanecerConectado, setPermanecerConectado] = useState(false);
+  let { setAuth } = useContext(UserContext);
 
   const navigate = useNavigate();
 
-  const handleLogin = async (userMail, userPass) => {
-    setEmail(document.getElementById("Email").value);
-    setPass(document.getElementById("Password").value);
-
+  const Login = async (data) => {
+    setLoading(true);
     try {
-
-      if (!teste) {
-        if (!/^[A-Z0-9._%+-]+@itapecerica+\.sp\.gov\.br$/i.test(email)) {
-          throw { status: 403, message: "Email inválido" };
-        }
-      }
-
-      const response = await API.post("/login", {
-        email: userMail,
-        pass: userPass,
-        permanecerConectado: permanecerConectado,
+      let response = await API.post("/login", {
+        pwd: data.pwd,
+        email: data.user,
       });
-      setScopo(response.data.scopo)
+      let token = response.data.token;
+      await localStorage.setItem("token", token);
       setAuth(true)
-
-      if (response.data.firstLogin) {
-        navigate("/alterarsenha");
-      } else {
-        navigate("/");
-      }
-    } catch (err) {
-      setError(err);
+      navigate("/");
+    } catch (error) {
       setAuth(false)
-
+      setLoading(false);
     }
   };
 
-  const renderPostit = () => {
-    if (error != undefined) {
-      return (
-        <div className="bg-red-500 text-white font-bold text-center py-4 mt-4 animate-down">
-          <p>Ops, algo deu errado</p>
-          <h1>{error.status}</h1>
-          <p>{renderPostitMessage(error)}</p>
-        </div>
+  const verifyToken = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw { message: "Token não encontrado" };
+      }
+
+      let response = await API.get("/verifyToken");
+      if (response.status === 200) {
+        navigate("/");
+      }
+      setAuth(true);
+    } catch (error) {
+
+      setAuth(false)
+
+      if (error.response?.status === 401) {
+        localStorage.removeItem("token");
+      }
+      console.log(
+        `necessário fazer login: ${error.response?.data.message || error.message}`
       );
     }
   };
 
-  const renderPostitMessage = (loginResult) => {
-    switch (loginResult.status) {
-      case 400:
-        return "Email e Senha devem estar preenchidos";
-      case 401:
-        return "Ops, email ou senha inválidos";
-      default:
-        return "Parece que tivemos um problema " + loginResult.message;
-    }
+  let handleSubmit = () => {
+    Login({ user, pwd });
   };
 
+  useEffect(() => {
+    verifyToken();
+  }, []);
+
   return (
-    <div
-      className="w-full h-dvh bg-white py-20 sm:py-30"
-      id="LoginContainer"
-      onKeyDown={(event) => {
-        event.key === "Enter" ? handleLogin(email, pass) : "";
-      }}
-    >
-      <div className="mx-auto sm:w-full sm:max-w-sm p-10 sm:p-0">
-        <img
-          className="mx-auto h-40 w-auto"
-          src={logoItap}
-          alt="Logo de Itapecerica da Serra"
-        />
-        <h2 className="mt-5 text-center text-4xl font-bold tracking-tight text-gray-900">
-          Login
-        </h2>
-        {renderPostit()}
-        <div className="mx-auto mt-5 sm:w-full sm:max-w-sm">
-          <div className="mt-5">
-            <label htmlFor="Email" className="font-bold">
-              Email
-            </label>
-            <input
-              type="email"
-              id="Email"
-              className="input bg-white"
-              autoComplete="false"
-              placeholder="emailexemple@example.com.br"
-              onKeyUp={(e) => setEmail(e.target.value)}
-            ></input>
+    <div className="flex items-start justify-center h-full">
+      <div className="mt-35 flex flex-row bg-white px-10">
+        <div className="w-90 pb-20 pt-10">
+          <div className=" text-center">
+            <h1 className="text-3xl">Login</h1>
           </div>
-          <div className="mt-5">
-            <label htmlFor="Password" className="font-bold">
-              Password
-            </label>
-            <input
-              type="password"
-              id="Password"
-              className="input bg-white"
-              placeholder="type your password"
-              onKeyUp={(e) => setPass(e.target.value)}
-            ></input>
-          </div>
-          <div className="mt-4">
-            <input
-              type="checkbox"
-              id="Conectado"
-              placeholder="type your password"
-              onChange={(e) => setPermanecerConectado(e.target.checked)}
-            ></input>
-            <label htmlFor="Conectado" className="ml-2">Permanecer conectado?</label>
-          </div>
-          <div>
-            <PrimaryButton
-              text="Fazer Login"
-              handler={() => handleLogin(email, pass)}
-            />
-          </div>
-          <div className="mt-2">
-            <a
-              href="mailto:miguel.moraes@itapecerica.sp.gov.br.com"
-              className="text-primary hover:text-primaryhover"
+          <div className="border-r-1 border-primary-500">
+            <div
+              onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+              className=" w-full bg-white py-4 px-4 box-border"
             >
-              Esqueceu a Senha?
-            </a>
+              <fieldset className="flex">
+                <span className="p-inputgroup-addon">
+                  <i className="pi pi-user"><FaUser /></i>
+                </span>
+                <InputText
+                  type="text"
+                  id="User"
+                  placeholder="Usuário"
+                  className="w-full input"
+                  onChange={(e) => setUser(e.target.value)}
+                />
+              </fieldset>
+
+              <fieldset className="flex my-4">
+                <span className="p-inputgroup-addon"><MdOutlinePassword /></span>
+                <input
+                  type="password"
+                  id="Pwd"
+                  placeholder="Senha"
+                  className="w-full input"
+                  onChange={(e) => setPwd(e.target.value)}
+                />
+              </fieldset>
+              <Button onClick={handleSubmit} label="Login" className="btn-primary w-full text-center" />
+
+            </div>
           </div>
         </div>
+        <div className="w-90 login-image overflow-hidden"></div>
       </div>
     </div>
   );

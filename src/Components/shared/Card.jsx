@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import { Card  } from 'primereact/card';
 
 // eslint-disable-next-line react/prop-types
 const Card = ({ title, descrition, towhere, toref }) => {
@@ -15,7 +16,7 @@ const Card = ({ title, descrition, towhere, toref }) => {
       <div className="card-footer">
         <Link
           to={toref}
-          className="block btn-primary"
+          className="block btn-primary mt-4 "
         >
           {towhere}
         </Link>

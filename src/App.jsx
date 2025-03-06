@@ -17,6 +17,7 @@ import HistoryDemandas from "./Components/Layout/DemandasTI/HistoryDemandas/Hist
 import ProtectRoutes from "./Components/middleware/ProtectRoutes";
 import HandleError from "./Components/middleware/HandleError";
 import Admin from "./Components/Layout/Admin/Admin";
+import Toten from "./Components/Layout/Toten/Toten";
 
 function App() {
   return (
@@ -40,6 +41,9 @@ function App() {
               <Route index element={<UserDemandas />} />
               <Route path="alldemandas" element={<AllDemandas />} />
               <Route path="historicodemandas" element={<HistoryDemandas />} />
+            </Route>
+            <Route path="toten" element={<Toten></Toten>}>
+
             </Route>
           </Route>
           <Route path="*" element={<HandleError />} />

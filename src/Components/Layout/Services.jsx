@@ -1,25 +1,21 @@
 import API from "/src/../service/API";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
 import HanlerError from "../middleware/HandleError";
 
-import Card from "../shared/Card";
+import { Card } from "primereact/card";
+import { Button } from 'primereact/button';
 
 // eslint-disable-next-line react/prop-types
 function Services() {
   const [services, setServices] = useState([]); // Inicializado como array vazio
   const [error, setError] = useState(false);
 
-  const navigate = useNavigate();
-
   const fetchData = async () => {
     try {
       const response = await API.get("/services");
       setServices(response.data.services); // Atualiza o estado com os serviços
     } catch (error) {
-      if (error.status == 401) {
-        return navigate("/login");
-      }
+      console.log(error.data.message);
       setError(error);
       return []; // Retorna um array vazio em caso de erro
     }
@@ -38,6 +34,16 @@ function Services() {
     return <HanlerError Error={error} />;
   }
 
+  const footer = (url, name) => {
+    return (
+      <>
+        <a href={url}>
+          <Button label={name} className="btn-primary w-full mt-4" />
+        </a>
+      </>
+    );
+  };
+
   return (
     <>
       <div id="Services">
@@ -47,9 +53,9 @@ function Services() {
               <Card
                 key={service.id}
                 title={service.name}
-                descrition={service.description}
-                towhere={service.name}
-                toref={`${service.url}`}
+                subTitle={service.description}
+                footer={footer(service.url, service.name)}
+                className="p-4"
               >
                 {service.name}
               </Card>

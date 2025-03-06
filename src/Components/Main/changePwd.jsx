@@ -1,6 +1,5 @@
 import { useState } from "react";
 
-import logoItap from "/prefeitura-de-itapecerica-da-serra.jpg";
 import API from "/src/../service/API";
 import AlertInfo from "../shared/alert/AlertInfo";
 
@@ -62,11 +61,6 @@ const ChangePwd = () => {
         </div>
         <div>
           <div>
-            <img
-              src={logoItap}
-              alt="Logo de itapecerica da serra"
-              className="h-60 m-auto"
-            />
             <h1 className="text-4xl font-bold my-4 text-center">Alterar Senha</h1>
             {status ? (
               <AlertInfo

@@ -7,7 +7,7 @@ import TableRow from "../../../shared/Table/TableRow";
 import TableCol from "../../../shared/Table/TableCol";
 import ActionButton from "../../../shared/Table/ActionButton";
 import AlertInfo from "../../../shared/alert/AlertInfo";
-import { AppContext } from "/src/context/Context";
+import { UserContext } from "/src/context/UserContext";
 
 import {
   Dialog,
@@ -17,7 +17,7 @@ import {
 } from "@headlessui/react";
 
 const AllDemandas = () => {
-  let {scopo, setScopo} = useContext(AppContext)
+  let {scopo, setScopo} = useContext(UserContext)
 
   let [tableData, setTableData] = useState([]);
   let [loading, setLoading] = useState(true);
@@ -151,7 +151,6 @@ const AllDemandas = () => {
 
   useEffect(() => {
     loadTable();
-
     setInterval(() => {
       loadTable();
     }, 10000)

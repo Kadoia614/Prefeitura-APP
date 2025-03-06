@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import API from "../../../../../service/API";
-import Table from "../../../shared/Table/Table";
-import TableRow from "../../../shared/Table/TableRow";
-import TableCol from "../../../shared/Table/TableCol";
 import AlertInfo from "../../../shared/alert/AlertInfo";
 import HanlerError from "../../../middleware/HandleError";
 import Loading from "../../../shared/Loading";
+
+import { DataTable } from "primereact/datatable";
+import { Column } from "primereact/column";
+import { Button } from "primereact/button";
+import { FaTrash, FaEdit } from "react-icons/fa";
 
 import {
   Dialog,
@@ -13,7 +15,6 @@ import {
   DialogPanel,
   DialogTitle,
 } from "@headlessui/react";
-import ActionButton from "../../../shared/Table/ActionButton";
 
 const PainelServices = () => {
   let [tableData, setTableData] = useState([]);
@@ -32,7 +33,7 @@ const PainelServices = () => {
     setLoading(true);
     try {
       const response = await API.get("/allservices");
-      console.log(response.data)
+      console.log(response.data);
       setTableData(response.data.services);
       setLoading(false);
     } catch (error) {
@@ -135,44 +136,53 @@ const PainelServices = () => {
           setAlert={setAlertBS}
         />
       )}
+
       <div>
-        <button
+        <Button
+          label="Cadastrar Serviço"
           className="btn-primary"
           onClick={() => {
             setOpenModalEdit(true);
             clearModal();
           }}
+        />
+
+        <DataTable
+          value={tableData}
+          size="large"
+          rowHover
+          stripedRows
+          tableClassName="mt-4"
+          paginator
+          rows={10}
+          rowsPerPageOptions={[10, 25, 50]}
+          tableStyle={{ minWidth: '40rem' }}
         >
-          Cadastrar Serviço
-        </button>
-        <Table header={["#", "Nome", "Descrição", "Url", "Editar", "Excluir"]}>
-          {tableData.map((item) => {
-            return (
-              <TableRow key={item.id}>
-                <TableCol>{item.id}</TableCol>
-                <TableCol>{item.name}</TableCol>
-                <TableCol>{item.description}</TableCol>
-                <TableCol>{item.url}</TableCol>
-                <TableCol>
-                  <ActionButton
-                    type="btn-primary"
-                    action="edit"
-                    handdler={toSave}
-                    item={item}
-                  />
-                </TableCol>
-                <TableCol>
-                  <ActionButton
-                    type="btn-danger"
-                    action="delete"
-                    handdler={toRemove}
-                    item={item}
-                  />
-                </TableCol>
-              </TableRow>
-            );
-          })}
-        </Table>
+          <Column field="id" header="#"></Column>
+          <Column field="name" header="Nome"></Column>
+          <Column field="description" header="Descrição"></Column>
+          <Column field="url" header="Url"></Column>
+          <Column
+            header="Editar"
+            body={(rowData) => (
+              <Button
+                className="btn-primary"
+                label={<FaEdit />}
+                onClick={() => toSave(rowData)}
+              />
+            )}
+          ></Column>
+          <Column
+            header="Excluir"
+            body={(rowData) => (
+              <Button
+                className="btn-danger"
+                label={<FaTrash />}
+                onClick={() => toRemove(rowData)}
+              />
+            )}
+          ></Column>
+        </DataTable>
       </div>
 
       {/* MODAL REGION */}
