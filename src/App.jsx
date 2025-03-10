@@ -17,9 +17,18 @@ import HistoryDemandas from "./Components/Layout/DemandasTI/HistoryDemandas/Hist
 import ProtectRoutes from "./Components/middleware/ProtectRoutes";
 import HandleError from "./Components/middleware/HandleError";
 import Admin from "./Components/Layout/Admin/Admin";
-import Toten from "./Components/Layout/Toten/Toten";
+
+import Toten from "./Components/Layout/Toten/Atendimento/Toten";
+import PreToten from "./Components/Layout/Toten/PreAtendimento/PreToten";
+import AllToten from "./Components/Layout/Toten/Atendimento/All/AllToten";
+
+import { UserContext } from "./context/UserContextFile";
+import { useContext } from "react";
+import TodayToten from "./Components/Layout/Toten/Atendimento/Today/TodayToten";
+import Footer from "./Components/Main/Footer";
 
 function App() {
+  let {scopo} = useContext(UserContext);
   return (
     <>
       <div id="Main" className="h-full flex flex-col">
@@ -42,12 +51,17 @@ function App() {
               <Route path="alldemandas" element={<AllDemandas />} />
               <Route path="historicodemandas" element={<HistoryDemandas />} />
             </Route>
-            <Route path="toten" element={<Toten></Toten>}>
 
+            <Route path="atendimento_toten" element={<Toten/>}>
+              <Route index element={scopo === 'admin' || scopo === 'tecnico' || scopo === 'gestor' ? <AllToten /> : <TodayToten />} />
             </Route>
+            <Route path="pre_atendimento_toten" element={<PreToten></PreToten>}/>
+
           </Route>
+          
           <Route path="*" element={<HandleError />} />
         </Routes>
+        <Footer />
       </div>
     </>
   );

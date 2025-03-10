@@ -3,11 +3,12 @@ import { useNavigate } from "react-router";
 
 import API from "../../../service/API";
 
-import { UserContext } from "/src/context/UserContext";
+import { UserContext } from "/src/context/UserContextFile";
 import { InputText } from "primereact/inputtext";
 import { MdOutlinePassword } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
 import { Button } from 'primereact/button';
+import Loading from "../shared/Loading";
 
 const Login = () => {
   let [user, setUser] = useState("");
@@ -31,6 +32,7 @@ const Login = () => {
       navigate("/");
     } catch (error) {
       setAuth(false)
+    } finally{
       setLoading(false);
     }
   };
@@ -67,6 +69,12 @@ const Login = () => {
   useEffect(() => {
     verifyToken();
   }, []);
+
+if(loading){
+  return (
+    <Loading></Loading>
+  )
+}
 
   return (
     <div className="flex items-start justify-center h-full">

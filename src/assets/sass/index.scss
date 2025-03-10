@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Inika:wght@400;700&display=swap");
 @import "primereact/resources/themes/lara-light-blue/theme.css"
-  layer(primereact);
+layer(primereact);
 @import "tailwindcss";
 
 @theme {
@@ -26,8 +26,8 @@
 #Main {
   background-image: url("/public/bg.png");
   background-size: cover;
-  background-position: center;
-
+  background-attachment: fixed;
+  overflow: scroll;
   .login-image {
     background-image: url("/public/login.jpg");
     background-size: cover;
@@ -36,15 +36,28 @@
 }
 
 .input {
-  @apply appearance-none rounded-md py-1.5 pr-7 pl-3 text-base text-gray-500 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-primary-500;
+  @apply appearance-none rounded-md py-1.5 pr-7 pl-3 text-base text-gray-500 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-primary-500 ;
 }
 
 .btn-primary {
   @apply bg-primary-500 hover:bg-primary-600 cursor-pointer text-white py-1 px-2 rounded;
 }
 
+.btn-cancel {
+  @apply bg-gray-200 hover:bg-gray-600 cursor-pointer text-gray-500 ring-1 ring-gray-400 py-1 px-2 rounded;
+}
+
 .btn-danger {
   @apply bg-red-500 hover:bg-red-600 cursor-pointer text-white py-1 px-2 rounded;
+}
+
+.content{
+  @apply bg-white rounded-sm w-full my-10 overflow-hidden relative;
+}
+.p-inputswitch-slider{
+  &::before{
+    @apply -mt-2.5
+  }
 }
 
 @keyframes jump {

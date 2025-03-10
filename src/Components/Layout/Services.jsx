@@ -34,7 +34,7 @@ function Services() {
     return <HanlerError Error={error} />;
   }
 
-  const footer = (url, name) => {
+  const cardFooter = (url, name) => {
     return (
       <>
         <a href={url}>
@@ -46,15 +46,15 @@ function Services() {
 
   return (
     <>
-      <div id="Services">
-        <div className="grid xl:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-x-3 gap-y-9">
+      <div id="Services" className="content">
+        <div className="p-10 grid xl:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-x-3 gap-y-9">
           {Array.isArray(services) &&
             services.map((service) => (
               <Card
                 key={service.id}
                 title={service.name}
                 subTitle={service.description}
-                footer={footer(service.url, service.name)}
+                footer={cardFooter(service.url, service.name)}
                 className="p-4"
               >
                 {service.name}

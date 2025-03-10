@@ -7,7 +7,7 @@ import TableRow from "../../../shared/Table/TableRow";
 import TableCol from "../../../shared/Table/TableCol";
 import ActionButton from "../../../shared/Table/ActionButton";
 import AlertInfo from "../../../shared/alert/AlertInfo";
-import { UserContext } from "/src/context/UserContext";
+import { UserContext } from "/src/context/UserContextFile";
 
 import {
   Dialog,
@@ -17,7 +17,7 @@ import {
 } from "@headlessui/react";
 
 const AllDemandas = () => {
-  let {scopo, setScopo} = useContext(UserContext)
+  let {scopo} = useContext(UserContext)
 
   let [tableData, setTableData] = useState([]);
   let [loading, setLoading] = useState(true);
@@ -35,20 +35,12 @@ const AllDemandas = () => {
   const fetchData = async () => {
     try {
       let response = await API.get("/demandas");
-      console.log(response.data)
-      return response.data;
+      setTableData(response.data.demandas);
     } catch (error) {
       setError(error.status);
     } finally {
       setLoading(false);
     }
-  };
-
-  const loadTable = async () => {
-    const data = await fetchData();
-
-    setTableData(data.demandas);
-    setScopo(data.scopo);
   };
 
   //#region Assume items
@@ -150,9 +142,9 @@ const AllDemandas = () => {
   };
 
   useEffect(() => {
-    loadTable();
+    fetchData();
     setInterval(() => {
-      loadTable();
+      fetchData();
     }, 10000)
   }, []);
 

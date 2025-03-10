@@ -1,23 +1,29 @@
+import { useEffect, useState, useContext } from "react";
 import { Outlet, useNavigate } from "react-router";
-import { useContext, useEffect } from "react";
-import { UserContext } from "../../context/UserContext";
+
+import { UserContext } from "../../context/UserContextFile";
 import API from "../../../service/API";
+import Loading from '../shared/Loading'
 
 const ProtectRoutes = () => {
-  const { setAuth } = useContext(UserContext);
+  let { setAuth, setScopo } = useContext(UserContext);
+  let [isLoading, setIsLoading] = useState(true); // Para controlar a exibição enquanto carrega
+
   const navigate = useNavigate();
 
   const authUser = async () => {
     try {
-      let response = await API.get("/verifyToken");
+      const response = await API.get("/verifyToken");
+      let responseScopo = response.data.scopo;
       setAuth(true);
-      console.log(response.data);
+      setScopo(responseScopo);
     } catch (error) {
       setAuth(false);
       console.log(error.message);
-      localStorage.removeItem('token');
-      navigate('/login')
-
+      localStorage.removeItem("token");
+      navigate("/login");
+    } finally {
+      setIsLoading(false); // Quando os dados estiverem carregados
     }
   };
 
@@ -25,8 +31,12 @@ const ProtectRoutes = () => {
     authUser();
   }, []);
 
+  if (isLoading) {
+    return <Loading></Loading>; // Ou um spinner de loading
+  }
+
   return (
-    <div className="container mx-auto h-full bg-white w-full lg:px-10 px-4 py-10 rounded-sm">
+    <div className="container mx-auto">
       <Outlet />
     </div>
   );
