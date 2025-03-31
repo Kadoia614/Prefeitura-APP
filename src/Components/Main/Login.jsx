@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router";
 import { Toast } from "primereact/toast";
 
@@ -142,6 +142,7 @@ const Login = () => {
         </div>
         <div className="w-90 login-image overflow-hidden"></div>
       </div>
+      <Toast ref={toast} />
     </div>
   );
 };
