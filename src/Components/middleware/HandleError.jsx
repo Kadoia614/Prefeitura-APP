@@ -23,7 +23,7 @@ const HanlerError = ({ Error }) => {
 };
 
 HanlerError.propTypes = {
-  Error: PropTypes.number,
+  Error: PropTypes.any,
 };
 
 export default HanlerError;
