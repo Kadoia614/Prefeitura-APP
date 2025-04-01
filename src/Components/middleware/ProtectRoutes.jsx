@@ -16,6 +16,7 @@ const ProtectRoutes = () => {
     try {
       const response = await API.get("/authuser");
       let responseScopo = response.data.scopo;
+      console.log('user autenticado')
       setAuth(true);
       setScopo(responseScopo);
     } catch (err) {
