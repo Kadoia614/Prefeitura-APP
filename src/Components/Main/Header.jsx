@@ -14,7 +14,7 @@ const Header = () => {
 
   const fetchData = async () => {
     try {
-      const response = await API.get("/services");
+      const response = await API.get("/service/user");
       const services = response.data.services;
       setUserServices(services);
     } catch (error) {

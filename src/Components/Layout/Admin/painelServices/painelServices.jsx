@@ -32,7 +32,7 @@ const PainelServices = () => {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const response = await API.get("/allservices");
+      const response = await API.get("/service");
       console.log(response.data);
       setTableData(response.data.services);
       setLoading(false);
@@ -55,9 +55,10 @@ const PainelServices = () => {
   };
 
   const saveItem = async (id) => {
+    console.log(modalData)
     if (!id) {
       try {
-        const response = await API.post("/services", { service: modalData });
+        const response = await API.post("/service", { service: modalData });
         setAlertBS([`Salvo com sucesso ${response.status}`, "success"]);
       } catch (error) {
         setAlertBS([
@@ -72,7 +73,7 @@ const PainelServices = () => {
     }
 
     try {
-      const response = await API.put(`/services/${id}`, { service: modalData });
+      const response = await API.put(`/service/${id}`, { service: modalData });
       setAlertBS([`Salvo com sucesso ${response.status}`, "success"]);
     } catch (error) {
       setAlertBS([`${error.response.data.message} ${error.status}`, "danger"]);

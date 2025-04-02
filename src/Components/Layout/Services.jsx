@@ -12,7 +12,7 @@ function Services() {
 
   const fetchData = async () => {
     try {
-      const response = await API.get("/service");
+      const response = await API.get("/service/user");
       setServices(response.data.services); // Atualiza o estado com os serviços
     } catch (error) {
       console.log(error.data.message);
