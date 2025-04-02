@@ -89,6 +89,7 @@ const PainelAdmin = () => {
   //#region EDIT / CREATE ITEMS
   const toSave = (item) => {
     setModalData(item);
+    console.log(setores)
     setOpenModalEdit(true);
   };
 
@@ -228,7 +229,6 @@ const PainelAdmin = () => {
             rowsPerPageOptions={[10, 25, 50]}
             tableStyle={{ minWidth: '40rem' }}
           >
-            <Column field="id" header="Code"></Column>
             <Column field="name" header="Name"></Column>
             <Column field="email" header="Email"></Column>
             <Column field="ramal" header="Ramal"></Column>
@@ -391,7 +391,9 @@ const PainelAdmin = () => {
                       } transition`}
                     />
                   </div>
-                  <div className="px-8 py-4">
+
+                  {/* verifica os setores do user */}
+                  {/* <div className="px-8 py-4">
                     {modalData?.permission
                       ? modalData.permission.map((p) => {
                           return (
@@ -432,7 +434,7 @@ const PainelAdmin = () => {
                           );
                         })
                       : ""}
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <div className="flex justify-end items-center mt-4">
