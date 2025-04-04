@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
-import { useNavigate } from "react-router";
 import { IoIosArrowDown } from "react-icons/io";
+import HanlerError from "../../../middleware/HandleError";
 
 import { Dialog } from "primereact/dialog";
 
@@ -9,7 +9,7 @@ import { Column } from "primereact/column";
 import { Button } from "primereact/button";
 import { FaTrash, FaEdit } from "react-icons/fa";
 import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
-import { Checkbox } from "primereact/checkbox";
+// import { Checkbox } from "primereact/checkbox";
 import { InputText } from "primereact/inputtext";
 
 import API from "../../../../../service/API";
@@ -31,8 +31,6 @@ const PainelAdmin = () => {
 
   const toast = useRef(null);
 
-  const navigate = useNavigate();
-
   const fetchData = async () => {
     try {
       const response = await API.get("/user");
@@ -40,32 +38,25 @@ const PainelAdmin = () => {
       setRoles(response.data.roles);
       setSetores(response.data.setores);
     } catch (error) {
-      if (error.status == 401) {
-        navigate("/login");
-      } else {
-        setError(error.status);
-      }
+      setError(error.status);
     }
   };
 
   //#region REMOVE ITEMS
 
   const toRemove = (item) => {
-    console.log(item);
     setExcludeModal(item.id);
   };
 
   useEffect(() => {
-    if (excludeModal !== undefined) {
+    if (excludeModal !== undefined && excludeModal !== null) {
       confirm();
     }
   }, [excludeModal]);
 
   const removeItem = async () => {
     try {
-      console.log(excludeModal);
       await API.delete(`/user/${excludeModal}`);
-
       toast.current.show({
         severity: "success",
         summary: "Rejected",
@@ -76,7 +67,7 @@ const PainelAdmin = () => {
       toast.current.show({
         severity: "error",
         summary: "Rejected",
-        detail: "Operação cancelada: " + error.message,
+        detail: "Operação cancelada: " + error.response.data.message,
         life: 3000,
       });
     } finally {
@@ -89,7 +80,6 @@ const PainelAdmin = () => {
   //#region EDIT / CREATE ITEMS
   const toSave = (item) => {
     setModalData(item);
-    console.log(setores)
     setOpenModalEdit(true);
   };
 
@@ -104,14 +94,15 @@ const PainelAdmin = () => {
       return; // Prevent submission if required fields are empty
     }
     if (!id) {
-      console.log(modalData.ramal);
       try {
         await API.post("/user", {
-          name: modalData.name,
-          email: modalData.email,
-          ramal: modalData.ramal,
-          setor_id: modalData.setor_id,
-          role: modalData.role,
+          user: {
+            name: modalData.name,
+            email: modalData.email,
+            ramal: modalData.ramal,
+            setor_id: modalData.setor_id,
+            role_id: modalData.role_id,
+          },
         });
         clearModal();
         setOpenModalEdit(false);
@@ -135,7 +126,6 @@ const PainelAdmin = () => {
     }
 
     try {
-      console.log(modalData);
       await API.put(`/user/${id}`, { user: modalData });
       clearModal();
       setOpenModalEdit(false);
@@ -149,7 +139,7 @@ const PainelAdmin = () => {
       toast.current.show({
         severity: "error",
         summary: "Confirmed",
-        detail: "Operação cancelada: " + error.response.data,
+        detail: "Operação cancelada: " + error.response.data.message,
         life: 3000,
       });
     } finally {
@@ -158,18 +148,19 @@ const PainelAdmin = () => {
     return;
   };
 
+  //permite a alteração incrementando o valor
   const editableItem = (key, value) => {
     setModalData((e) => ({ ...e, [key]: value }));
   };
 
-  const editablePermission = async (serviceId, key, value) => {
-    await setModalData((prev) => ({
-      ...prev,
-      permission: prev.permission.map((perm) =>
-        perm.service_id === serviceId ? { ...perm, [key]: value } : perm
-      ),
-    }));
-  };
+  // const editablePermission = async (serviceId, key, value) => {
+  //   await setModalData((prev) => ({
+  //     ...prev,
+  //     permission: prev.permission.map((perm) =>
+  //       perm.service_id === serviceId ? { ...perm, [key]: value } : perm
+  //     ),
+  //   }));
+  // };
   //#endregion EDIT ITEMS
 
   const clearModal = () => {
@@ -206,6 +197,20 @@ const PainelAdmin = () => {
     });
   };
 
+  const roleTableTemplate = (row) => {
+    let roleName = roles.find((role) => role.id === row.role_id).name;
+    return roleName;
+  };
+
+  const setorTableTemplate = (row) => {
+    let setorName = setores.find((setor) => setor.id === row.setor_id).name;
+    return setorName;
+  };
+
+  if (error) {
+    return <HanlerError Error={error} />;
+  }
+
   return (
     <>
       <div id="PainelAdmin">
@@ -227,13 +232,21 @@ const PainelAdmin = () => {
             paginator
             rows={10}
             rowsPerPageOptions={[10, 25, 50]}
-            tableStyle={{ minWidth: '40rem' }}
+            tableStyle={{ minWidth: "40rem" }}
           >
             <Column field="name" header="Name"></Column>
             <Column field="email" header="Email"></Column>
             <Column field="ramal" header="Ramal"></Column>
-            <Column field="setor.name" header="Setor"></Column>
-            <Column field="role" header="Permissão"></Column>
+            <Column
+              field="setor_id"
+              header="Setor"
+              body={setorTableTemplate}
+            ></Column>
+            <Column
+              field="role_id"
+              header="Permissão"
+              body={roleTableTemplate}
+            ></Column>
             <Column
               header="Editar"
               body={(rowData) => (
@@ -272,6 +285,7 @@ const PainelAdmin = () => {
                   id="Data"
                   className="sm:grid grid-cols-1 sm:grid-cols-2 gap-4"
                 >
+                  {/* Nome */}
                   <fieldset className="mt-2">
                     <label htmlFor="Name" className="font-bold">
                       Nome
@@ -289,6 +303,8 @@ const PainelAdmin = () => {
                       />
                     </div>
                   </fieldset>
+
+                  {/* Email */}
                   <fieldset className="mt-2">
                     <label htmlFor="Email" className="font-bold">
                       Email
@@ -305,6 +321,8 @@ const PainelAdmin = () => {
                       />
                     </div>
                   </fieldset>
+
+                  {/* Ramal */}
                   <fieldset className="mt-2">
                     <label htmlFor="Ramal" className="font-bold">
                       Ramal
@@ -322,13 +340,15 @@ const PainelAdmin = () => {
                       />
                     </div>
                   </fieldset>
+
+                  {/* Setor */}
                   <fieldset className="mt-2">
-                    <label htmlFor="Role" className="font-bold">
+                    <label htmlFor="Setor" className="font-bold">
                       Setor
                     </label>
                     <div className="mt-1">
                       <select
-                        id="Role"
+                        id="Setor"
                         className="w-full"
                         value={modalData.setor_id || ""}
                         onChange={(e) => {
@@ -348,6 +368,8 @@ const PainelAdmin = () => {
                       </select>
                     </div>
                   </fieldset>
+
+                  {/* Role */}
                   <fieldset className="mt-2">
                     <label htmlFor="Role" className="font-bold">
                       Permissão
@@ -356,9 +378,9 @@ const PainelAdmin = () => {
                       <select
                         id="Role"
                         className="w-full"
-                        value={modalData.role || ""}
+                        value={modalData.role_id || ""}
                         onChange={(e) => {
-                          editableItem("role", e.target.value);
+                          editableItem("role_id", e.target.value);
                         }}
                       >
                         <option value="" disabled>
@@ -366,8 +388,8 @@ const PainelAdmin = () => {
                         </option>
                         {roles.map((e) => {
                           return (
-                            <option key={e} value={e}>
-                              {e}
+                            <option key={e.id} value={e.id}>
+                              {e.name}
                             </option>
                           );
                         })}
@@ -392,7 +414,7 @@ const PainelAdmin = () => {
                     />
                   </div>
 
-                  {/* verifica os setores do user */}
+                  {/* verifica os Serviços do user */}
                   {/* <div className="px-8 py-4">
                     {modalData?.permission
                       ? modalData.permission.map((p) => {
@@ -437,6 +459,8 @@ const PainelAdmin = () => {
                   </div> */}
                 </div>
               </div>
+
+              {/* Início rodapé */}
               <div className="flex justify-end items-center mt-4">
                 <Button
                   label="Salvar"

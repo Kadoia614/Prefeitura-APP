@@ -2,10 +2,6 @@ import { useEffect, useState } from "react";
 
 import API from "../../../../../service/API";
 
-import Table from "../../../shared/Table/Table";
-import TableRow from "../../../shared/Table/TableRow";
-import TableCol from "../../../shared/Table/TableCol";
-import ActionButton from "../../../shared/Table/ActionButton";
 import AlertInfo from "../../../shared/alert/AlertInfo";
 import HanlerError from "../../../middleware/HandleError";
 import Loading from "../../../shared/Loading";
@@ -91,7 +87,6 @@ const Setor = () => {
   const removeItem = async (id) => {
     setLoading(true);
     try {
-      console.log(id);
       const response = await API.delete(`/setor/${id}`);
       setAlertBS([`Excluido com sucesso ${response.status}`, "success"]);
     } catch (error) {
@@ -109,7 +104,6 @@ const Setor = () => {
 
   const editableItem = (key, value) => {
     setModalData((e) => ({ ...e, [key]: value }));
-    console.log(modalData);
   };
 
   useEffect(() => {
