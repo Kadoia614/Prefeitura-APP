@@ -10,9 +10,7 @@ import PainelServices from "./Components/Layout/Admin/painelServices/painelServi
 import Setor from "./Components/Layout/Admin/Setor/Setor";
 
 import DemandasTi from "./Components/Layout/DemandasTI/DemandasTi";
-import AllDemandas from "./Components/Layout/DemandasTI/AllDemandas/AllDemandas";
-import UserDemandas from "./Components/Layout/DemandasTI/UserDemandas/UserDemandas";
-import HistoryDemandas from "./Components/Layout/DemandasTI/HistoryDemandas/HistoryDemandas";
+import Demandas from "./Components/Layout/DemandasTI/AllDemandas/AllDemandas";
 
 import ProtectRoutes from "./Components/middleware/ProtectRoutes";
 import HandleError from "./Components/middleware/HandleError";
@@ -38,9 +36,7 @@ function App() {
             </Route>
 
             <Route path="demandasti" element={<DemandasTi />}>
-              <Route index element={<UserDemandas />} />
-              <Route path="alldemandas" element={<AllDemandas />} />
-              <Route path="historicodemandas" element={<HistoryDemandas />} />
+              <Route index element={<Demandas />} />
             </Route>
           </Route>
           

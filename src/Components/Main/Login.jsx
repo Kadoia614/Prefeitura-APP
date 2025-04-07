@@ -16,7 +16,7 @@ const Login = () => {
   let [password, setPassword] = useState("");
   let [loading, setLoading] = useState(false);
 
-  let { setAuth } = useContext(UserContext);
+  let { setAuth, setScopo, scopo } = useContext(UserContext);
 
   const navigate = useNavigate();
   const toast = useRef(null);
@@ -34,7 +34,9 @@ const Login = () => {
       await localStorage.setItem("token", token);
       console.log("Authenticado com sucesso");
       setAuth(true);
-      navigate("/");
+      setScopo(response.data.scopo);
+      console.log("scopo", scopo);
+      // navigate("/");
     } catch (error) {
       if (error.status === 401) {
         toast.current.show({

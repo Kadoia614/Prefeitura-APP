@@ -15,10 +15,11 @@ const ProtectRoutes = () => {
   const authUser = async () => {
     try {
       const response = await API.get("/authuser");
-      let responseScopo = response.data.scopo;
+      console.log(response.data)
+      let responseScopo = response.data.user.role;
       console.log('user autenticado')
-      setAuth(true);
       setScopo(responseScopo);
+      setAuth(true);
     } catch (err) {
       if (err.status === 401) {
         setAuth(false);
