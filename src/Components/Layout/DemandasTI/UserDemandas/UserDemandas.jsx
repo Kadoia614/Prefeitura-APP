@@ -17,7 +17,7 @@ import {
   DialogTitle,
 } from "@headlessui/react";
 
-const AllDemandas = () => {
+const UserDemandas = () => {
   let { scopo } = useContext(UserContext);
   const toast = useRef(null);
 
@@ -26,14 +26,14 @@ const AllDemandas = () => {
   let [modalData, setModalData] = useState([]);
   let [setores, setSetores] = useState([]);
   let [openModalEdit, setOpenModalEdit] = useState(false);
-  let [assume, setAssume] = useState(null);
+  let [finish, setFinish] = useState(null);
 
   const fetchData = async () => {
     try {
-      let response = await API.get("/demandas");
+      let response = await API.get("/demandas/user");
       setTableData(response.data.demandas);
       setSetores(response.data.setores.setores);
-      console.log(response.data);
+      console.log(response.data)
     } catch (error) {
       setError(error.status);
     }
@@ -89,14 +89,14 @@ const AllDemandas = () => {
     }
   };
 
-  const assumirDemanda = async (id) => {
+  const finishDemanda = async (id) => {
     try {
-      await API.put(`/demandas/${id}/assume`);
+      await API.put(`/demandas/${id}/finish`);
 
       toast.current.show({
         severity: "success",
         summary: "Confirmed",
-        detail: "Demanda Assumida com sucesso",
+        detail: "Demanda finalizada com sucesso",
         life: 3000,
       });
     } catch (error) {
@@ -104,7 +104,7 @@ const AllDemandas = () => {
         severity: "error",
         summary: "Confirmed",
         detail:
-          "Não foi possível assumir a demanda " + error.response.data.message,
+          "Não foi possível finalizar a demanda " + error.response.data.message,
         life: 3000,
       });
     } finally {
@@ -124,15 +124,15 @@ const AllDemandas = () => {
     setModalData({});
   };
 
-  const acceptAssume = () => {
-    assumirDemanda(assume);
+  const acceptFinish = () => {
+    finishDemanda(finish);
   };
 
-  const rejectAssume = () => {
+  const rejectFinish = () => {
     toast.current.show({
       severity: "warn",
       summary: "Rejected",
-      detail: "You have rejected",
+      detail: "Operação Cancelada",
       life: 3000,
     });
   };
@@ -147,13 +147,13 @@ const AllDemandas = () => {
   }, []);
 
   useEffect(() => {
-    if (assume !== undefined && assume !== null) {
+    if (finish !== undefined && finish !== null) {
       confirmDialog({
         message: (
           <div className="text-gray-700 text-base p-4">
             Você tem certeza que deseja{" "}
             <span className="font-semibold text-blue-600">
-              assumir esta demanda
+              Finalizar esta demanda
             </span>
             ?
           </div>
@@ -178,7 +178,7 @@ const AllDemandas = () => {
         acceptLabel: (
           <span className="flex items-center gap-2">
             <i className="pi pi-check" />
-            Sim, assumir
+            Sim, finalizar
           </span>
         ),
         rejectLabel: (
@@ -187,14 +187,14 @@ const AllDemandas = () => {
             Cancelar
           </span>
         ),
-        accept: acceptAssume,
-        reject: rejectAssume,
+        accept: acceptFinish,
+        reject: rejectFinish,
       });
     }
-  }, [assume]);
+  }, [finish]);
 
-  const toAssume = (id) => {
-    setAssume(id);
+  const toFinish = (id) => {
+    setFinish(id);
   };
 
   // gerenciamento de erros para caso algo de errado ocorra durante as requisições
@@ -329,7 +329,7 @@ const AllDemandas = () => {
               new Date(rowData.updatedAt).toLocaleDateString("pt-BR")
             }
           />
-
+          {scopo == 1 || scopo == 2 ? (
             <Column
               header="Ações"
               body={(rowData) => (
@@ -343,24 +343,25 @@ const AllDemandas = () => {
                   >
                     <i className="pi pi-pencil" /> Editar
                   </button>
-                  {(scopo == 1 || scopo == 2) && rowData.status !== 1 && (
+                  {(scopo == 1 || scopo == 2) && rowData.status == 1 && (
                     <button
-                      className="flex items-center gap-1 px-3 py-1 text-xs text-white bg-green-600 hover:bg-green-700 rounded-lg transition"
+                      className="flex items-center gap-1 px-3 py-1 text-xs text-white bg-red-600 hover:bg-red-700 rounded-lg transition"
                       onClick={() => {
-                        toAssume(rowData.id);
+                        toFinish(rowData.id);
                       }}
                     >
-                      <i className="pi pi-check" /> Assumir
+                      <i className="pi pi-check" /> Finalizar
                     </button>
                   )}
                 </div>
               )}
             />
+          ) : (
+            ""
+          )}
         </DataTable>
       </div>
 
-      {scopo}
-      
       {/* Arrumar essa cagada aqui */}
       <Dialog
         open={openModalEdit}
@@ -396,19 +397,15 @@ const AllDemandas = () => {
                         >
                           <fieldset className="mt-2 flex md:flex-row flex-col gap-4">
                             <div className="w-full">
-                              <label htmlFor="Setor" className="font-bold">
-                                Setor responsável
+                              <label htmlFor="Setor responsável" className="font-bold">
+                                Patrimônio
                               </label>
                               <div className="mt-1">
                                 <input
                                   type="text"
                                   id="Setor"
                                   className="input"
-                                  placeholder={
-                                    setores.find((setor) => {
-                                      return setor.id === modalData.setor_id;
-                                    })?.name
-                                  }
+                                  placeholder={setores.find(setor => {return setor.id === modalData.setor_id})?.name}
                                   required
                                   disabled={"disabled"}
                                 />
@@ -474,9 +471,7 @@ const AllDemandas = () => {
                                     e.target.value - 1
                                   );
                                 }}
-                                disabled={
-                                  modalData.id && scopo > 3 ? "disabled" : false
-                                }
+                                disabled={scopo > 3 ? "disabled" : false}
                               >
                                 <option value="" disabled>
                                   Selecione a prioridade
@@ -549,4 +544,4 @@ const AllDemandas = () => {
   );
 };
 
-export default AllDemandas;
+export default UserDemandas;

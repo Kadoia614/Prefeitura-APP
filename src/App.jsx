@@ -11,6 +11,8 @@ import Setor from "./Components/Layout/Admin/Setor/Setor";
 
 import DemandasTi from "./Components/Layout/DemandasTI/DemandasTi";
 import Demandas from "./Components/Layout/DemandasTI/AllDemandas/AllDemandas";
+import UserDemandas from "./Components/Layout/DemandasTI/UserDemandas/UserDemandas";
+import HistoryDemandas from "./Components/Layout/DemandasTI/HistoryDemandas/HistoryDemandas";
 
 import ProtectRoutes from "./Components/middleware/ProtectRoutes";
 import HandleError from "./Components/middleware/HandleError";
@@ -37,6 +39,8 @@ function App() {
 
             <Route path="demandasti" element={<DemandasTi />}>
               <Route index element={<Demandas />} />
+              <Route path="userdemandas" element={<UserDemandas />} />
+              <Route path="history" element={<HistoryDemandas />} />
             </Route>
           </Route>
           

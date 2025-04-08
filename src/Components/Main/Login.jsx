@@ -36,7 +36,7 @@ const Login = () => {
       setAuth(true);
       setScopo(response.data.scopo);
       console.log("scopo", scopo);
-      // navigate("/");
+      navigate("/");
     } catch (error) {
       if (error.status === 401) {
         toast.current.show({

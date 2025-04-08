@@ -13,13 +13,13 @@ const DemandasTi = () => {
           </div>
 
           <div className="px-2 py-1 bg-primary-500 hover:bg-primary-600 text-md font-bold text-white rounded-t-lg">
-            <Link to={"alldemandas"}>
+            <Link to={"userdemandas"}>
               <h3>Minhas Demandas</h3>
             </Link>
           </div>
 
           <div className="px-2 py-1 bg-primary-500 hover:bg-primary-600 text-md font-bold text-white rounded-t-lg">
-            <Link to={"historicodemandas"}>
+            <Link to={"history"}>
               <h3>Histórico de Demandas</h3>
             </Link>
           </div>
