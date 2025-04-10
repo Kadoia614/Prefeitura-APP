@@ -1,7 +1,6 @@
 import { useState } from "react";
 
 import API from "/src/../service/API";
-import AlertInfo from "../shared/alert/AlertInfo";
 
 import PrimaryButton from "../shared/PrimaryButton";
 
@@ -10,7 +9,6 @@ const ChangePwd = () => {
   let [email, setEmail] = useState();
   let [newPass, setNewPass] = useState();
   let [oldPass, setOldPass] = useState();
-  let [status, setStatus] = useState();
 
   const handleAlterPwd = async (userMail, userOldPass, userNewPass) => {
     try {
@@ -62,15 +60,6 @@ const ChangePwd = () => {
         <div>
           <div>
             <h1 className="text-4xl font-bold my-4 text-center">Alterar Senha</h1>
-            {status ? (
-              <AlertInfo
-                tipo={status.type}
-                menssagem={`${status.message}`}
-                setAlert={setStatus}
-              />
-            ) : (
-              ""
-            )}
             <div>
               <fieldset className="mt-5">
                 <label htmlFor="Email" className="block font-bold">Email</label>

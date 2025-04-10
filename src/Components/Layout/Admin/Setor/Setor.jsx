@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 
 import API from "../../../../../service/API";
 
-import AlertInfo from "../../../shared/alert/AlertInfo";
 import HanlerError from "../../../middleware/HandleError";
 import Loading from "../../../shared/Loading";
 
@@ -121,14 +120,6 @@ const Setor = () => {
   return (
     <>
       <div id="PainelAdmin">
-        {/* Alerta */}
-        {alertBS && (
-          <AlertInfo
-            tipo={alertBS[1]}
-            menssagem={alertBS[0]}
-            setAlert={setAlertBS}
-          />
-        )}
         <div>
           <Button
             label="Cadastrar Setor"
