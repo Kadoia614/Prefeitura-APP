@@ -245,7 +245,7 @@ const PainelServices = () => {
                           <div>
                             {modalData?.permission
                               ? modalData.permission.map((permission) => (
-                                  <div
+                                <div
                                     key={permission.id}
                                     className="flex justify-between items-start px-4 py-2"
                                   >
