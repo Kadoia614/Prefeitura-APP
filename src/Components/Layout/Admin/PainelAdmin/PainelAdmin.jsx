@@ -126,7 +126,7 @@ const PainelAdmin = () => {
 
   return (
     <div id="PainelAdmin" className="p-4 bg-gray-50">
-      <Toast ref={toast} className="mt-20" />
+      <Toast ref={toast}/>
 
       <Button
         label="Cadastrar usuário"
