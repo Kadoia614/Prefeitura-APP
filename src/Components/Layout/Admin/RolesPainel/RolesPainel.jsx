@@ -14,7 +14,7 @@ import {
 import { Toast } from "primereact/toast";
 import InputField from "../../../shared/InputField";
 
-const Setor = () => {
+const RolesPainel = () => {
   const [tableData, setTableData] = useState([]);
   const [openModalEdit, setOpenModalEdit] = useState(false);
   const [modalData, setModalData] = useState({});
@@ -25,8 +25,8 @@ const Setor = () => {
 
   const fetchData = async () => {
     try {
-      const response = await API.get("/setor");
-      setTableData(response.data.setores);
+      const response = await API.get("/roles");
+      setTableData(response.data.roles);
     } catch (error) {
       setError(error.status);
       showToast("error", "Failed to load sectors: " + error.message);
@@ -40,10 +40,10 @@ const Setor = () => {
   const handleSave = async (id) => {
     try {
       if (!id) {
-        await API.post("/setor", { setor: modalData });
+        await API.post("/roles", { role: modalData });
         showToast("success", "Sector created successfully!");
       } else {
-        await API.put(`/setor/${id}`, { setor: modalData });
+        await API.put(`/roles/${id}`, { role: modalData });
         showToast("success", "Sector updated successfully!");
       }
       loadTable();
@@ -56,7 +56,7 @@ const Setor = () => {
 
   const handleRemove = async (id) => {
     try {
-      await API.delete(`/setor/${id}`);
+      await API.delete(`/roles/${id}`);
       showToast("success", "Sector deleted successfully!");
       loadTable();
     } catch (error) {
@@ -92,10 +92,10 @@ const Setor = () => {
 
   return (
     <>
-      <div id="PainelSetor" className="p-4 bg-gray-50">
+      <div id="PainelRole" className="p-4 bg-gray-50">
         <Toast ref={toast}/>
         <Button
-          label="Cadastrar Setor"
+          label="Cadastrar Role"
           className="btn-primary mb-4"
           onClick={() => {
             clearModal();
@@ -115,9 +115,9 @@ const Setor = () => {
         >
           <Column field="id" header="#" />
           <Column field="name" header="Nome" />
-          <Column field="description" header="Descrição" />
           <Column
             header="Editar"
+            className="w-20"
             body={(rowData) => (
               <Button
                 className="btn-primary"
@@ -131,6 +131,7 @@ const Setor = () => {
           />
           <Column
             header="Excluir"
+            className="w-20"
             body={(rowData) => (
               <Button
                 className="btn-danger"
@@ -159,7 +160,7 @@ const Setor = () => {
                   <div className="sm:flex sm:items-start">
                     <div className="mt-3 text-left sm:mt-0 w-full">
                       <DialogTitle as="h3" className="text-lg font-semibold text-gray-900">
-                        {modalData.id ? "Atualizar Setor" : "Cadastrar Setor"}
+                        {modalData.id ? "Atualizar Role" : "Cadastrar Role"}
                       </DialogTitle>
                       <div className="mt-2">
                         <div id="UserConfig">
@@ -167,17 +168,9 @@ const Setor = () => {
                             {/* Name Field */}
                             <InputField
                               id="Name"
-                              label="Nome do Setor"
+                              label="Nome da Role"
                               value={modalData.name || ""}
                               onChange={(e) => editableItem("name", e.target.value)}
-                            />
-                            {/* Description Field */}
-                            <InputField
-                              id="Description"
-                              label="Descrição do Setor"
-                              value={modalData.description || ""}
-                              onChange={(e) => editableItem("description", e.target.value)}
-                              isTextArea
                             />
                           </div>
                         </div>
@@ -249,4 +242,4 @@ const Setor = () => {
   );
 };
 
-export default Setor;
+export default RolesPainel;

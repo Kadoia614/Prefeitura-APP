@@ -25,13 +25,14 @@ const PainelServices = () => {
   const [excludeModalOpen, setExcludeModalOpen] = useState(false);
   const [excludeModal, setExcludeModal] = useState(null);
   const [rolePermission, setRolePermission] = useState(false);
+  const [dropdownService, setDropdownService] = useState(false);
   const [error, setError] = useState(null);
   const toast = useRef(null); // Create a ref for the toast
 
   const fetchData = async () => {
     try {
       const response = await API.get("/service");
-      console.log(response.data)
+      console.log(response.data);
       setTableData(response.data.services);
       setRoles(response.data.roles);
     } catch (error) {
@@ -226,7 +227,7 @@ const PainelServices = () => {
                         <div
                           id="RolesConfig"
                           className={`mt-6 bg-gray-100 rounded-sm ring-gray-300 ring-1 hover:ring-primary transition ${
-                            rolePermission ? "h-full" : "h-15"
+                            rolePermission ? "h-full" : "hidden"
                           } overflow-hidden`}
                         >
                           <div
@@ -234,7 +235,7 @@ const PainelServices = () => {
                             onClick={() => setRolePermission(!rolePermission)}
                           >
                             <h3 className="text-lg font-bold">
-                              Serviços Ativos
+                              Roles permissions
                             </h3>
                             <IoIosArrowDown
                               className={`transition ${
@@ -246,7 +247,7 @@ const PainelServices = () => {
                           <div>
                             {modalData?.permission
                               ? modalData.permission.map((permission) => (
-                                <div
+                                  <div
                                     key={permission.id}
                                     className="flex justify-between items-start px-4 py-2"
                                   >
@@ -340,6 +341,27 @@ const PainelServices = () => {
                               : "Sem Role atribuida"}
                           </div>
                         </div>
+
+                        <div
+                          id="ServiceVisibility"
+                          className={`mt-6 bg-gray-100 rounded-sm ring-gray-300 ring-1 hover:ring-primary transition ${
+                            dropdownService ? "h-full" : "h-15"
+                          } overflow-hidden`}
+                        >
+                          <div
+                            className="flex justify-between items-center px-4 py-4 cursor-pointer"
+                            onClick={() => setDropdownService(!rolePermission)}
+                          >
+                            <h3 className="text-lg font-bold">
+                              Service Visibility
+                            </h3>
+                            <IoIosArrowDown
+                              className={`transition ${
+                                rolePermission ? "rotate-180" : "rotate-0"
+                              }`}
+                            />
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -364,7 +386,6 @@ const PainelServices = () => {
           </div>
         </div>
       </Dialog>
-      
       {/* Exclude Confirmation Dialog */}
       <Dialog
         open={excludeModalOpen}

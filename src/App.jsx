@@ -8,6 +8,7 @@ import Services from "./Components/Layout/Services";
 import PainelAdmin from "./Components/Layout/Admin/PainelAdmin/PainelAdmin";
 import PainelServices from "./Components/Layout/Admin/painelServices/painelServices";
 import Setor from "./Components/Layout/Admin/Setor/Setor";
+import RolesPainel from "./Components/Layout/Admin/RolesPainel/RolesPainel";
 
 import DemandasTi from "./Components/Layout/DemandasTI/DemandasTi";
 import Demandas from "./Components/Layout/DemandasTI/AllDemandas/AllDemandas";
@@ -35,6 +36,7 @@ function App() {
               <Route index element={<PainelAdmin />} />
               <Route path="service" element={<PainelServices />} />
               <Route path="setor" element={<Setor />} />
+              <Route path="roles" element={<RolesPainel />} />
             </Route>
 
             <Route path="demandasti" element={<DemandasTi />}>
