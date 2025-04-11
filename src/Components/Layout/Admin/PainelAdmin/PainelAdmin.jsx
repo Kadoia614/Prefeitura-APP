@@ -45,6 +45,7 @@ const PainelAdmin = () => {
   const fetchData = async () => {
     try {
       const response = await API.get(API_ENDPOINTS.USERS);
+      console.log(response.data)
       setTableData(response.data.users);
       setRoles(response.data.roles);
       setSetores(response.data.setores);

@@ -31,6 +31,7 @@ const PainelServices = () => {
   const fetchData = async () => {
     try {
       const response = await API.get("/service");
+      console.log(response.data)
       setTableData(response.data.services);
       setRoles(response.data.roles);
     } catch (error) {
@@ -336,7 +337,7 @@ const PainelServices = () => {
                                     </div>
                                   </div>
                                 ))
-                              : ""}
+                              : "Sem Role atribuida"}
                           </div>
                         </div>
                       </div>

@@ -32,7 +32,7 @@ const AllDemandas = () => {
     try {
       let response = await API.get("/demandas");
       setTableData(response.data.demandas);
-      setSetores(response.data.setores.setores);
+      setSetores(response.data.setores);
       console.log(response.data);
     } catch (error) {
       setError(error.status);
